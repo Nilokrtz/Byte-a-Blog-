@@ -4,7 +4,7 @@ import userRoute from './src/routes/user.route.js';
 import dotenv from 'dotenv';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 dotenv.config();
 
 app.get('/', (req, res) => {
