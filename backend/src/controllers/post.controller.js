@@ -3,6 +3,7 @@ import { createService, findAllService } from "../services/post.service.js";
 const createController = async (req, res) => {
   try {
     const { title, content, image } = req.body;
+    console.log(req);
 
     if (!title || !content || !image) {
       res.status(400).send("Submit all required fields");
@@ -12,7 +13,7 @@ const createController = async (req, res) => {
       title,
       content,
       image,
-      user: { _id: "695746ea50c382d2fc64de0b" },
+      user: req.userId,
     });
 
     res.status(201).send({ message: "Post created successfully" });

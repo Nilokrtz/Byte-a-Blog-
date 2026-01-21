@@ -52,10 +52,9 @@ const findByIdController = async (req, res) => {
   try {
     const user = req.user;
 
-    res.status(200).send({
-      message: "User found successfully",
-      user,
-    });
+    user = await userService.findByIdService(req.id);
+
+    res.status(200).send({user});
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

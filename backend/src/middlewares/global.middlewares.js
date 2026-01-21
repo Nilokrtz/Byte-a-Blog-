@@ -20,6 +20,7 @@ export const validUser = async (req, res, next) => {
     const id = req.params.id;
 
     const user = await userService.findById(id);
+    console.log('Validating User:', user);
 
     if (!user) {
       return res.status(400).send({ message: "User not found" });
@@ -36,5 +37,5 @@ export const validUser = async (req, res, next) => {
 
 export default {
   validId,
-  validUser,
+  validUser
 };
