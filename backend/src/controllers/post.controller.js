@@ -1,6 +1,6 @@
-import { createService, findAllService, countPosts, topPostService, findByIdService} from "../services/post.service.js";
+import { createService, findAllService, countPosts, topPostService, findByIdService, searchByTitleService} from "../services/post.service.js";
 
-const createController = async (req, res) => {
+export const createController = async (req, res) => {
   try {
     const { title, content, image } = req.body;
     console.log(req);
@@ -22,7 +22,7 @@ const createController = async (req, res) => {
   }
 };
 
-const findAllController = async (req, res) => {
+export const findAllController = async (req, res) => {
   try {
     let {limit, offset} = req.query;
     limit = Number(limit);
@@ -69,7 +69,7 @@ const findAllController = async (req, res) => {
   }
 };
 
-const topPostController = async (req, res) => {
+export const topPostController = async (req, res) => {
   try {
 
   const top = await topPostService();
@@ -98,7 +98,7 @@ const topPostController = async (req, res) => {
 
 };
 
-const findByIdController = async (req, res) => {
+export const findByIdController = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -107,7 +107,7 @@ const findByIdController = async (req, res) => {
       return res.status(404).send({ message: "Post not found" });
     }
 
-    res.send({
+    return res.send({
       id: post._id,
       title: post.title,
       content: post.content,
@@ -121,6 +121,32 @@ const findByIdController = async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
-}
+};
 
-export { createController, findAllController, topPostController, findByIdController};
+export const searchByTitleController = async (req, res) => {
+  try {
+    const { title } = req.query;
+
+    const posts = await searchByTitleService(title);
+
+    if (posts.length === 0) {
+      return res.status(400).send({ message: "No posts found with this title" });
+    }
+
+    return res.send({
+      results: posts.map((post) => ({
+        id: post._id,
+        title: post.title,
+        content: post.content,
+        image: post.image,
+        likes: post.likes,
+        comments: post.comments,
+        name: post.user.name,
+        username: post.user.username,
+        userAvatar: post.user.avatar
+      }))
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};

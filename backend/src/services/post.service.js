@@ -9,3 +9,8 @@ export const countPosts = () => Post.countDocuments();
 export const topPostService = () => Post.findOne().sort({ _id: -1 }).populate("user");
 
 export const findByIdService = (id) => Post.findById(id).populate("user");
+
+export const searchByTitleService = (title) => Post.find({
+  title: { $regex: `${title || ""}`, $options: "i" }
+ }).sort({ _id: -1 })
+ .populate("user");
