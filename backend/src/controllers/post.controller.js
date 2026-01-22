@@ -1,4 +1,4 @@
-import { createService, findAllService, countPosts } from "../services/post.service.js";
+import { createService, findAllService, countPosts, topPostService } from "../services/post.service.js";
 
 const createController = async (req, res) => {
   try {
@@ -69,4 +69,33 @@ const findAllController = async (req, res) => {
   }
 };
 
-export { createController, findAllController };
+const topPostController = async (req, res) => {
+  try {
+
+  const top = await topPostService();
+
+  if(!top){
+    return res.status(400).send({ message: "There is no registered post" });
+  }
+
+  res.send({
+    topPost: {
+      id: top._id,
+      title: top.title,
+      content: top.content,
+      image: top.image,
+      likes: top.likes,
+      comments: top.comments,
+      name: top.user.name,
+      username: top.user.username,
+      userAvatar: top.user.avatar
+    }
+  })
+
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+
+};
+
+export { createController, findAllController, topPostController};

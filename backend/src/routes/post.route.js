@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { createController, findAllController } from "../controllers/post.controller.js";
+import { createController, findAllController,topPostController } from "../controllers/post.controller.js";
 import { authMiddleware } from "../middlewares/auth.middlewares.js";
 
 const route = Router();
 
 route.post("/", authMiddleware, createController);
 route.get("/", authMiddleware, findAllController);
+route.get("/top", topPostController);
 
 export default route;

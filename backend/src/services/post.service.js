@@ -6,8 +6,11 @@ const findAllService = (limit, offset) => Post.find().sort({ _id: -1 }).skip(off
 
 const countPosts = () => Post.countDocuments();
 
+const topPostService = () => Post.findOne().sort({ _id: -1 }).populate("user");
+
 export {
   createService,
   findAllService,
-  countPosts
+  countPosts,
+  topPostService
 };
